@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline';">
+<title>IntentLock | PayPal AI Hackathon 2026</title>
+<style>
+  :root { --ink:#10273d; --navy:#0b1f3a; --blue:#0877c9; --green:#18835a; --amber:#bb7410; --red:#c13f38; --paper:#f4f7fa; --white:#fff; --line:#d5dee7; --muted:#566777; --pale-blue:#e6f2fb; --pale-green:#e9f5ef; --pale-amber:#fbf2df; --pale-red:#fae9e7; --display:"Aptos Display","Segoe UI",sans-serif; --body:"Aptos","Segoe UI",sans-serif; }
+  * { box-sizing:border-box; }
+  html,body { width:100%; height:100%; margin:0; }
+  body { background:#0a1827; color:var(--ink); font-family:var(--body); overflow:hidden; }
+  .stage { width:min(100vw,177.78vh); height:min(100vh,56.25vw); margin:auto; position:relative; top:50%; transform:translateY(-50%); }
+  #deck { width:100%; height:100%; position:relative; overflow:hidden; background:var(--paper); box-shadow:0 24px 80px #0008; }
+  .slide { display:none; position:absolute; inset:0; padding:5.2% 6.1% 5.8%; overflow:hidden; background:var(--paper); }
+  .slide.active { display:flex; flex-direction:column; animation:arrive .24s ease-out; }
+  @keyframes arrive { from { opacity:.5; transform:translateY(7px); } to { opacity:1; transform:translateY(0); } }
+  .slide::before { content:""; position:absolute; inset:0; pointer-events:none; opacity:.34; background-image:radial-gradient(#b9c7d1 .65px,transparent .65px); background-size:15px 15px; mask-image:linear-gradient(135deg,#000,transparent 62%); }
+  .slide>* { position:relative; z-index:1; }
+  .cover { color:var(--white); background:var(--navy); }
+  .cover::before { opacity:.16; background-image:linear-gradient(90deg,#75b3d7 1px,transparent 1px),linear-gradient(#75b3d7 1px,transparent 1px); background-size:42px 42px; mask-image:linear-gradient(120deg,#000,transparent 78%); }
+  .cover::after { content:""; position:absolute; right:-11%; bottom:-40%; width:64%; aspect-ratio:1; border:1px solid #9fc5dc66; border-radius:50%; box-shadow:0 0 0 36px #9fc5dc0e,0 0 0 92px #9fc5dc0a; }
+  .eyebrow { margin:0 0 1.1rem; color:var(--blue); font-size:clamp(11px,1.1vw,15px); font-weight:800; text-transform:uppercase; letter-spacing:.1em; }
+  .cover .eyebrow { color:#93d2ee; }
+  h1,h2,h3,p { margin-top:0; }
+  h1,h2,h3 { font-family:var(--display); }
+  h1 { max-width:900px; margin-bottom:1rem; font-size:clamp(34px,5.4vw,74px); line-height:1.02; font-weight:760; }
+  h2 { max-width:1000px; margin-bottom:.65rem; font-size:clamp(27px,3.2vw,44px); line-height:1.08; }
+  h3 { margin-bottom:.5rem; font-size:clamp(16px,1.45vw,21px); line-height:1.15; }
+  p { margin-bottom:.65rem; line-height:1.4; }
+  .dek { max-width:830px; color:var(--muted); font-size:clamp(15px,1.5vw,21px); line-height:1.45; }
+  .cover .dek { color:#cad8e5; max-width:760px; font-size:clamp(18px,2vw,27px); }
+  .cover-top { display:flex; justify-content:space-between; align-items:center; }
+  .wordmark { font-weight:800; font-size:clamp(15px,1.5vw,20px); letter-spacing:.02em; }
+  .wordmark b { color:#8bc9e6; }
+  .cover-copy { margin-top:auto; margin-bottom:auto; }
+  .cover h1 { font-size:clamp(45px,6.8vw,92px); max-width:800px; }
+  .cover-line { width:70px; height:5px; margin:1.3rem 0; background:#f0b548; }
+  .cover-foot { display:flex; gap:12px; flex-wrap:wrap; align-items:center; color:#cad8e5; font-size:13px; }
+  .pill { display:inline-flex; align-items:center; gap:7px; padding:7px 11px; border:1px solid #aac3d644; border-radius:999px; color:inherit; font-size:12px; font-weight:700; }
+  .pill .dot { width:7px; height:7px; border-radius:50%; background:#4ec38d; }
+  .slide-head { margin-bottom:2.1%; }
+  .foot { margin-top:auto; display:flex; justify-content:space-between; align-items:end; color:#657585; font-size:11px; }
+  .foot strong { color:var(--ink); }
+  .layout { display:grid; gap:16px; }
+  .two { grid-template-columns:1fr 1fr; }
+  .panel { background:var(--white); border:1px solid var(--line); border-radius:7px; padding:17px 18px; box-shadow:0 4px 14px #12304408; }
+  .panel p:last-child { margin-bottom:0; }
+  .kicker { color:var(--muted); font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; }
+  .quote { color:var(--navy); font-family:var(--display); font-size:clamp(17px,1.6vw,22px); font-weight:650; line-height:1.35; }
+  .request { border-left:5px solid var(--blue); }
+  .request .quote { margin:9px 0 0; }
+  .drift-list { display:grid; gap:10px; }
+  .drift { display:grid; grid-template-columns:34px 1fr; gap:10px; align-items:start; padding:12px 14px; background:var(--white); border:1px solid var(--line); border-radius:6px; }
+  .mark { display:inline-grid; place-items:center; width:30px; height:30px; border-radius:50%; font-weight:900; }
+  .mark.bad { background:var(--pale-red); color:var(--red); }
+  .small { color:var(--muted); font-size:12px; line-height:1.35; }
+  .scenario-tag { margin-top:10px; color:var(--muted); font-size:11px; font-style:italic; }
+  .flow { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:2% 0 3%; }
+  .flow-step { min-height:132px; padding:16px; border-top:4px solid var(--blue); background:var(--white); }
+  .flow-step:nth-child(2) { border-color:var(--amber); }
+  .flow-step:nth-child(3) { border-color:var(--green); }
+  .flow-step:nth-child(4) { border-color:#143a67; }
+  .number { display:block; color:var(--blue); font-weight:900; font-size:12px; margin-bottom:12px; }
+  .flow-step p { color:var(--muted); font-size:13px; margin:0; }
+  .thesis { padding:18px 22px; background:var(--navy); color:var(--white); border-radius:6px; font-size:clamp(16px,1.65vw,23px); font-weight:700; line-height:1.35; }
+  .thesis em { color:#8bd2ac; font-style:normal; }
+  .timeline { display:grid; grid-template-columns:repeat(5,1fr); margin:3.5% 0 3%; }
+  .time-step { position:relative; min-height:130px; padding:18px 14px 8px 0; border-top:2px solid #c3d0da; }
+  .time-step::before { content:""; position:absolute; top:-7px; left:0; width:12px; height:12px; border-radius:50%; background:var(--blue); border:2px solid var(--paper); }
+  .time-step:last-child::before { background:var(--green); }
+  .time-step h3 { font-size:clamp(14px,1.2vw,17px); }
+  .time-step p { color:var(--muted); font-size:12px; max-width:175px; }
+  .gate-row { display:grid; grid-template-columns:1fr 1fr; gap:13px; }
+  .gate { padding:13px 15px; border-radius:6px; background:var(--pale-blue); border-left:4px solid var(--blue); }
+  .gate.paypal { background:var(--pale-green); border-color:var(--green); }
+  .gate b { display:block; margin-bottom:3px; }
+  .offer-table { width:100%; border-collapse:collapse; font-size:13px; background:var(--white); border:1px solid var(--line); }
+  .offer-table th { padding:11px 13px; background:var(--navy); color:var(--white); text-align:left; }
+  .offer-table td { padding:11px 13px; border-bottom:1px solid var(--line); vertical-align:top; }
+  .offer-table tr:last-child td { border-bottom:0; }
+  .offer-table tr:nth-child(even) { background:#f8fafc; }
+  .status { display:inline-block; padding:4px 8px; border-radius:4px; font-size:10px; font-weight:900; letter-spacing:.04em; white-space:nowrap; }
+  .allow { color:#126342; background:var(--pale-green); }
+  .block { color:#9f2b26; background:var(--pale-red); }
+  .review { color:#8b580c; background:var(--pale-amber); }
+  .rule-chip { display:inline-block; margin:2px 3px 2px 0; padding:3px 7px; border:1px solid var(--line); border-radius:4px; color:var(--muted); font-size:10px; }
+  .table-note { margin-top:10px; color:var(--muted); font-size:11px; }
+  .architecture { display:grid; grid-template-columns:1fr 38px 1fr 38px 1fr; align-items:stretch; gap:7px; margin:2% 0 2.5%; }
+  .arch-box { min-height:122px; padding:14px; background:var(--white); border:1px solid var(--line); border-top:4px solid var(--blue); }
+  .arch-box.trust { border-top-color:var(--green); }
+  .arch-box.paypal { border-top-color:#133f70; }
+  .arch-box h3 { font-size:15px; }
+  .arch-box ul { margin:8px 0 0; padding-left:16px; color:var(--muted); font-size:11px; line-height:1.45; }
+  .arrow { display:grid; place-items:center; color:var(--blue); font-size:24px; font-weight:800; }
+  .boundary { padding:12px 15px; background:#fff; border:1px dashed #9aabb9; border-radius:5px; color:var(--muted); font-size:12px; }
+  .boundary b { color:var(--ink); }
+  .sponsor { display:grid; grid-template-columns:104px 1fr 142px; gap:12px; align-items:center; padding:12px 14px; background:var(--white); border-bottom:1px solid var(--line); }
+  .sponsor:first-child { border-radius:6px 6px 0 0; }
+  .sponsor:last-child { border-bottom:0; border-radius:0 0 6px 6px; }
+  .sponsor strong { color:var(--navy); }
+  .sponsor .role { color:var(--muted); font-size:12px; }
+  .sponsor .why { text-align:right; color:var(--muted); font-size:11px; }
+  .prize-note { margin-top:13px; padding:12px 14px; background:var(--pale-amber); border-left:4px solid var(--amber); font-size:12px; line-height:1.4; }
+  .risk-grid { display:grid; grid-template-columns:1.1fr .9fr; gap:16px; }
+  .phase { display:grid; grid-template-columns:75px 1fr; gap:12px; padding:12px 0; border-bottom:1px solid var(--line); }
+  .phase:last-child { border-bottom:0; }
+  .phase b { color:var(--blue); }
+  .phase p { margin:0; color:var(--muted); font-size:12px; }
+  .risk { padding:14px 15px; border-left:4px solid var(--red); background:var(--white); margin-bottom:9px; }
+  .risk:last-child { margin-bottom:0; }
+  .risk b { display:block; margin-bottom:4px; }
+  .risk p { margin:0; color:var(--muted); font-size:12px; }
+  .metrics { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:12px; }
+  .metric { background:var(--navy); color:var(--white); padding:12px; border-radius:5px; }
+  .metric b { display:block; color:#9cd5ee; font-size:14px; margin-bottom:4px; }
+  .metric span { color:#d5e1ec; font-size:11px; }
+  .sources { display:grid; grid-template-columns:1fr 1fr; gap:12px 20px; }
+  .source { padding:11px 0; border-bottom:1px solid var(--line); }
+  .source a { color:#075e9c; font-size:13px; font-weight:750; text-decoration-thickness:1px; text-underline-offset:3px; }
+  .source p { margin:4px 0 0; color:var(--muted); font-size:11px; line-height:1.35; }
+  .closing { margin-top:auto; padding:15px 18px; background:var(--navy); color:var(--white); border-left:5px solid #f0b548; border-radius:5px; font-family:var(--display); font-size:clamp(18px,2vw,27px); font-weight:700; }
+  .controls { position:fixed; z-index:20; bottom:0; left:0; right:0; height:54px; display:flex; align-items:center; justify-content:center; gap:10px; background:#071421; color:#e5edf2; font:12px var(--body); }
+  .controls button { min-width:76px; padding:7px 11px; color:#f5f8fa; background:transparent; border:1px solid #536579; border-radius:4px; font:inherit; cursor:pointer; }
+  .controls button:hover,.controls button:focus-visible { background:#1a344b; outline:2px solid #89c9e5; outline-offset:2px; }
+  #count { min-width:56px; text-align:center; font-variant-numeric:tabular-nums; }
+  .progress { position:fixed; z-index:21; left:0; bottom:54px; width:100%; height:3px; background:#263746; }
+  .progress i { display:block; height:100%; width:11.11%; background:#52b98c; transition:width .2s ease; }
+  @media (max-width:760px) {
+    body { overflow-x:hidden; overflow-y:auto; background:var(--paper); }
+    .stage { width:100%; height:auto; top:auto; transform:none; margin:0; }
+    #deck { height:auto; min-height:calc(100svh - 54px); overflow-x:hidden; overflow-y:visible; box-shadow:none; }
+    .cover::after { display:none; }
+    .slide { position:relative; min-height:calc(100svh - 54px); padding:28px 20px 74px; overflow:visible; }
+    .slide:not(.active) { display:none; }
+    .slide.active { display:flex; }
+    .two,.flow,.gate-row,.risk-grid,.sources { grid-template-columns:1fr; }
+    .flow-step { min-height:0; }
+    .timeline { grid-template-columns:1fr; margin:18px 0; }
+    .time-step { min-height:75px; padding:10px 0 10px 23px; border-top:0; border-left:2px solid #c3d0da; }
+    .time-step::before { top:9px; left:-7px; }
+    .time-step p { max-width:none; }
+    .architecture { grid-template-columns:1fr; }
+    .arrow { transform:rotate(90deg); min-height:20px; }
+    .sponsor { grid-template-columns:82px 1fr; }
+    .sponsor .why { grid-column:2; text-align:left; }
+    .metrics { grid-template-columns:1fr; }
+    .cover { min-height:calc(100svh - 54px); }
+    .cover-top { align-items:flex-start; gap:10px; flex-wrap:wrap; }
+    .cover-top .pill { padding:5px 8px; font-size:10px; white-space:nowrap; }
+    .cover-copy { margin:38px 0 auto; }
+    .cover h1 { font-size:clamp(40px,11vw,54px); }
+    .cover .dek { font-size:16px; }
+    .cover-foot { gap:7px; font-size:11px; }
+    .foot { margin-top:24px; }
+    .offer-table { font-size:11px; }
+    .offer-table th,.offer-table td { padding:8px 7px; }
+  }
+  @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.01ms !important; transition-duration:.01ms !important; } }
+</style>
+</head>
+<body>
+<main class="stage" aria-label="IntentLock pitch presentation">
+<div id="deck">
+  <section class="slide cover active" aria-label="Slide 1: IntentLock">
+    <div class="cover-top"><div class="wordmark">INTENT<b>LOCK</b></div><span class="pill"><i class="dot"></i> PAYPAL AI HACKATHON 2026</span></div>
+    <div class="cover-copy"><p class="eyebrow">A buyer-side policy layer for agentic commerce</p><h1>Keep the agent.<br>Lock the intent.</h1><div class="cover-line"></div><p class="dek">IntentLock checks the exact order against the user's confirmed terms before a PayPal Sandbox payment can be captured.</p></div>
+    <div class="cover-foot"><span>AI researches.</span><span>Code verifies.</span><span>People authorize.</span><span>PayPal processes.</span></div>
+    <div class="foot"><span>Concept and demo scope | October 2026</span><strong>01 / 09</strong></div>
+  </section>
+  <section class="slide" aria-label="Slide 2: The control gap">
+    <div class="slide-head"><p class="eyebrow">01 / The control gap</p><h2>A recommendation isn't authorization.</h2><p class="dek">The user's request can be clear while the final order quietly drifts.</p></div>
+    <div class="layout two" style="flex:1;align-items:stretch"><div class="panel request"><div class="kicker">User's confirmed request</div><p class="quote">"Buy two ergonomic chairs for the team. Keep the total under $400, use an approved seller, and do not add a subscription."</p><p class="scenario-tag">Illustrative demo scenario; not a market statistic.</p></div><div class="drift-list"><div class="drift"><span class="mark bad">!</span><div><b>Price changes</b><span class="small">The selected quantity pushes the total above the user's limit.</span></div></div><div class="drift"><span class="mark bad">!</span><div><b>Seller changes</b><span class="small">A product page or redirect substitutes a seller the user did not approve.</span></div></div><div class="drift"><span class="mark bad">!</span><div><b>Terms change</b><span class="small">A recurring plan, add-on, or different quantity appears at checkout.</span></div></div></div></div>
+    <div class="thesis" style="margin-top:16px">IntentLock's job is not to make the agent smarter. It is to <em>re-check what will actually be paid.</em></div><div class="foot"><span>Product thesis: authorization should bind to the transaction, not only the conversation.</span><strong>02 / 09</strong></div>
+  </section>
+  <section class="slide" aria-label="Slide 3: The product">
+    <div class="slide-head"><p class="eyebrow">02 / The product</p><h2>IntentLock turns intent into a purchase mandate.</h2><p class="dek">The user confirms structured rules. Deterministic code checks them against a server-owned order snapshot.</p></div>
+    <div class="flow"><div class="flow-step"><span class="number">01 / INTERPRET</span><h3>AI proposes constraints</h3><p>Item, quantity, maximum total, allowed seller, recurring terms, expiry.</p></div><div class="flow-step"><span class="number">02 / CONFIRM</span><h3>User fixes the mandate</h3><p>Ambiguity asks a question. No missing permission is silently invented.</p></div><div class="flow-step"><span class="number">03 / VERIFY</span><h3>Code checks the final order</h3><p>Recalculate from trusted product and order data; unknown fields fail closed.</p></div><div class="flow-step"><span class="number">04 / AUTHORIZE</span><h3>PayPal completes checkout</h3><p>Buyer approves in PayPal. Backend re-checks policy before capture.</p></div></div>
+    <div class="layout two"><div class="panel"><h3>What is meaningfully different?</h3><p class="small">A buyer-side checkpoint that binds a confirmed mandate to a specific order and invalidates approval when protected fields change.</p></div><div class="panel"><h3>What we are not claiming</h3><p class="small">Not a new payment rail, not a replacement for PayPal Agent Ready or commerce protocols, and not a claim that no comparable policy product exists.</p></div></div><div class="foot"><span>Novelty is a product hypothesis to test, not an absolute claim.</span><strong>03 / 09</strong></div>
+  </section>
+  <section class="slide" aria-label="Slide 4: Checkout flow">
+    <div class="slide-head"><p class="eyebrow">03 / End-to-end flow</p><h2>The policy check sits directly before capture.</h2><p class="dek">A precise state transition makes the PayPal integration central and the guardrail testable.</p></div>
+    <div class="timeline"><div class="time-step"><h3>Request</h3><p>User states constraints in plain language.</p></div><div class="time-step"><h3>Mandate</h3><p>AI returns validated fields; user confirms or clarifies.</p></div><div class="time-step"><h3>Offer</h3><p>Channel3 search returns candidates; app snapshots observed data.</p></div><div class="time-step"><h3>PayPal approval</h3><p>Create Sandbox order; buyer approves the exact PayPal checkout.</p></div><div class="time-step"><h3>Re-check + capture</h3><p>Backend verifies order-to-mandate match, then captures and records PayPal's response.</p></div></div>
+    <div class="gate-row"><div class="gate"><b>IntentLock gate</b><span class="small">Reject changed item, seller, quantity, total, currency, or recurring terms. Expire stale approval.</span></div><div class="gate paypal"><b>PayPal gate</b><span class="small">Buyer authorization remains in PayPal Checkout. IntentLock never treats a browser redirect as payment success.</span></div></div><div class="foot"><span>Orders v2 Sandbox flow; verify exact current SDK/API behavior during implementation.</span><strong>04 / 09</strong></div>
+  </section>
+  <section class="slide" aria-label="Slide 5: The demo">
+    <div class="slide-head"><p class="eyebrow">04 / The demo moment</p><h2>Same request. Three offers. One safe path.</h2><p class="dek">Show the policy decision, then mutate the browser value and prove the backend still rejects it.</p></div>
+    <table class="offer-table"><thead><tr><th>Offer snapshot</th><th>Exact check</th><th>Decision</th></tr></thead><tbody><tr><td>2 x chair at $149 / approved seller / one-time</td><td>$298 total; seller allowed; no recurring terms</td><td><span class="status allow">ALLOW</span></td></tr><tr><td>2 x chair at $229 / approved seller / one-time</td><td>$458 total exceeds $400 mandate</td><td><span class="status block">BLOCK</span> <span class="rule-chip">OVER_BUDGET</span></td></tr><tr><td>Chair plus $99 care plan / approved seller</td><td>Recurring terms were not authorized</td><td><span class="status block">BLOCK</span> <span class="rule-chip">RECURRING_NOT_ALLOWED</span></td></tr><tr><td>Price missing or seller cannot be verified</td><td>Required authorization fields are unknown</td><td><span class="status review">REVIEW</span> <span class="rule-chip">DATA_UNVERIFIED</span></td></tr></tbody></table>
+    <div class="layout two" style="margin-top:15px"><div class="panel"><h3>Memorable proof</h3><p class="small">Edit the client total to $1. The server reloads its trusted snapshot, recalculates $458, and refuses capture.</p></div><div class="panel"><h3>Honest proof</h3><p class="small">Use clearly labeled Channel3 results or fixtures; demonstrate a PayPal Sandbox order, not fulfillment by an external retailer.</p></div></div><p class="table-note">All offers and prices shown are illustrative test fixtures, not live quotes or measured results.</p><div class="foot"><span>Policy decisions are deterministic, repeatable, and tied to stored evidence.</span><strong>05 / 09</strong></div>
+  </section>
+  <section class="slide" aria-label="Slide 6: Architecture and boundaries">
+    <div class="slide-head"><p class="eyebrow">05 / Architecture</p><h2>AI proposes. Backend owns the authorization boundary.</h2><p class="dek">Every external response is normalized; every payment action references an approved, persisted purchase.</p></div>
+    <div class="architecture"><div class="arch-box"><h3>AI + product data</h3><ul><li>Extract structured mandate</li><li>Channel3 search adapter</li><li>Untrusted text stays data</li></ul></div><div class="arrow">&gt;</div><div class="arch-box trust"><h3>IntentLock policy service</h3><ul><li>Runtime schema validation</li><li>Deterministic rule evaluation</li><li>Persist snapshot + approval</li></ul></div><div class="arrow">&gt;</div><div class="arch-box paypal"><h3>PayPal Sandbox</h3><ul><li>Orders API create</li><li>Buyer checkout approval</li><li>Server re-check + capture</li></ul></div></div>
+    <div class="layout two"><div class="panel"><h3>Stack</h3><p class="small">React + TypeScript / Node + Express / Zod / PostgreSQL / PayPal Orders v2 / AG Grid Community.</p></div><div class="panel"><h3>Hard boundary</h3><p class="small">No model-controlled capture; no client-supplied total trusted; no public secrets; idempotent payment operations; verified status only from PayPal.</p></div></div><div class="boundary" style="margin-top:12px"><b>External checkout limitation:</b> Channel3 documents product search and lookup; its programmatic checkout is marked "Coming soon" with early access by request. The demo uses PayPal Sandbox checkout for the app's own test order.</div><div class="foot"><span>Unknown seller, price, recurrence, or order mapping means review/block, never implicit approval.</span><strong>06 / 09</strong></div>
+  </section>
+  <section class="slide" aria-label="Slide 7: Sponsor tools">
+    <div class="slide-head"><p class="eyebrow">06 / Sponsor strategy</p><h2>Use sponsor tools where they improve the product.</h2><p class="dek">One primary sponsor-prize focus; no integration is added just to decorate the stack.</p></div>
+    <div class="panel" style="padding:0;overflow:hidden"><div class="sponsor"><strong>AG Grid</strong><span class="role">Primary sponsor focus: sortable, filterable decision and payment ledger; inspect evidence behind each allow/block.</span><span class="why"><span class="status allow">CORE UX</span></span></div><div class="sponsor"><strong>Channel3</strong><span class="role">Live product search / lookup to supply candidate data. Keep checkout explicitly out of scope unless access is granted.</span><span class="why"><span class="status review">DISCOVERY</span></span></div><div class="sponsor"><strong>Render</strong><span class="role">Host the web demo and backend; keep environment secrets server-side and verify persistence after restart.</span><span class="why"><span class="status review">DELIVERY</span></span></div><div class="sponsor"><strong>Postman</strong><span class="role">Publish a collection for policy, order, and webhook smoke tests so a judge can reproduce the API path.</span><span class="why"><span class="status review">REPRODUCIBILITY</span></span></div></div>
+    <div class="prize-note"><b>Prize rule:</b> Official rules allow at most one Sponsor Prize alongside either one Grand Prize or one Honorable Mention. Use AG Grid deeply and select one sponsor category; don't dilute the build across every partner.</div><div class="foot"><span>AG Grid Community features are sufficient; avoid Enterprise-only grouping/detail claims without confirmed access.</span><strong>07 / 09</strong></div>
+  </section>
+  <section class="slide" aria-label="Slide 8: Delivery plan and evidence">
+    <div class="slide-head"><p class="eyebrow">07 / Build and prove</p><h2>De-risk checkout first; measure the guardrail, not the hype.</h2><p class="dek">A narrow working system is more persuasive than a broad mockup.</p></div>
+    <div class="risk-grid" style="flex:1"><div class="panel"><div class="phase"><b>Gate 0</b><p><strong>PayPal vertical slice.</strong> Create, buyer-approve, capture, and reconcile one Sandbox order. Confirm the exact state flow before building the agent.</p></div><div class="phase"><b>Gate 1</b><p><strong>Policy core.</strong> Schema, clarification, deterministic evaluation, approval binding, mutation/retry tests.</p></div><div class="phase"><b>Gate 2</b><p><strong>Real discovery + ledger.</strong> Channel3 access check; integrate search if available; otherwise label fixtures. Add AG Grid and deploy.</p></div><div class="phase"><b>Gate 3</b><p><strong>Judge-ready demo.</strong> Re-run tests from clean setup; record the real flow; include source links and test credentials securely.</p></div></div>
+      <div><div class="risk"><b>PayPal Agent Ready / ACS</b><p>Adjacent and potentially overlapping. Position IntentLock as an independent policy checkpoint; do not claim it replaces PayPal protocols or built-in controls.</p></div><div class="risk"><b>Gated partner access</b><p>PayPal Agentic Commerce Services require onboarding; Channel3 checkout is early access. Neither is a P0 dependency.</p></div><div class="panel" style="margin-top:10px"><h3>Report measured checks</h3><div class="metrics"><div class="metric"><b>Policy</b><span>Allowed / blocked / review scenarios pass</span></div><div class="metric"><b>Integrity</b><span>Changed-order and retry cases rejected safely</span></div><div class="metric"><b>Payment</b><span>Sandbox state matches PayPal response</span></div></div></div></div></div>
+    <div class="foot"><span>No invented market size, win-rate lift, or savings claims.</span><strong>08 / 09</strong></div>
+  </section>
+  <section class="slide" aria-label="Slide 9: Research and close">
+    <div class="slide-head"><p class="eyebrow">08 / Research basis</p><h2>Build on what exists. Be precise about what is new.</h2><p class="dek">Checked against official documentation and hackathon rules on October 22, 2026.</p></div>
+    <div class="sources"><div class="source"><a href="https://developer.paypal.com/agent-ready/overview" target="_blank" rel="noopener">PayPal Agent Ready overview</a><p>Protocols, AI surfaces, and PayPal/Braintree integration paths; page updated Oct. 13, 2026.</p></div><div class="source"><a href="https://developer.paypal.com/agentic-commerce-services/about/" target="_blank" rel="noopener">PayPal Agentic Commerce Services</a><p>Merchant-facing product discovery, carts, and purchases; access requires onboarding.</p></div><div class="source"><a href="https://github.com/paypal/agent-toolkit" target="_blank" rel="noopener">PayPal Agent Toolkit</a><p>Agent framework tools for PayPal APIs, including orders and payments.</p></div><div class="source"><a href="https://www.trychannel3.com/developers/" target="_blank" rel="noopener">Channel3 for Developers</a><p>Search and lookup are documented; programmatic checkout is labeled coming soon / early access.</p></div><div class="source"><a href="https://developers.googleblog.com/under-the-hood-universal-commerce-protocol-ucp/" target="_blank" rel="noopener">Google: Universal Commerce Protocol</a><p>Open commerce protocol for discovery, checkout, and order management across agent surfaces.</p></div><div class="source"><a href="https://paypalaihackathon.devpost.com/rules" target="_blank" rel="noopener">PayPal AI Hackathon rules</a><p>Functional demo requirement, equally weighted criteria, sponsor tools, and prize limits.</p></div></div>
+    <div class="closing">IntentLock does not grant an agent more power. It makes every purchase prove it stayed inside the user's intent.</div><div class="foot"><span>IntentLock | Product hypothesis, testable demo, honest scope.</span><strong>09 / 09</strong></div>
+  </section>
+</div>
+</main>
+<div class="progress" aria-hidden="true"><i id="progressFill"></i></div>
+<nav class="controls" aria-label="Slide navigation"><button id="prev" type="button" aria-label="Previous slide">Previous</button><span id="count" aria-live="polite">01 / 09</span><button id="next" type="button" aria-label="Next slide">Next</button></nav>
+<script>
+  "use strict";
+  const slides = Array.from(document.querySelectorAll(".slide"));
+  const count = document.getElementById("count");
+  const progress = document.getElementById("progressFill");
+  let current = 0;
+  function showSlide(index) {
+    current = Math.max(0, Math.min(slides.length - 1, index));
+    slides.forEach((slide, i) => { slide.classList.toggle("active", i === current); slide.setAttribute("aria-hidden", String(i !== current)); });
+    count.textContent = String(current + 1).padStart(2, "0") + " / " + String(slides.length).padStart(2, "0");
+    progress.style.width = ((current + 1) / slides.length * 100) + "%";
+    document.title = slides[current].getAttribute("aria-label") + " | IntentLock";
+  }
+  document.getElementById("prev").addEventListener("click", () => showSlide(current - 1));
+  document.getElementById("next").addEventListener("click", () => showSlide(current + 1));
+  document.addEventListener("keydown", event => {
+    if (event.key === "ArrowRight" || event.key === "PageDown") showSlide(current + 1);
+    if (event.key === "ArrowLeft" || event.key === "PageUp") showSlide(current - 1);
+    if (event.key === "Home") showSlide(0);
+    if (event.key === "End") showSlide(slides.length - 1);
+  });
+  showSlide(0);
+</script>
+</body>
+</html>
